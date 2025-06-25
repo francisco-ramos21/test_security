@@ -4,6 +4,7 @@ on:
     push:
         paths:
             - 'apps/sonarqube/**'
+            - '.github/workflows/deploy-sonarqube.yml'
     pull_request:
         paths:
             - 'apps/sonarqube/**'
@@ -20,6 +21,21 @@ jobs:
         steps:
             - name: ⬇️ Checkout code
               uses: actions/checkout@v4
+
+            - name: 🔐 Setup SSH key
+              run: |
+                mkdir -p ~/.ssh
+                echo "${{ secrets.SONAR_SSH_KEY }}" > ~/.ssh/id_rsa
+                chmod 600 ~/.ssh/id_rsa
+                ssh-keyscan -p ${{ secrets.SONAR_SSH_PORT }} -H ${{ secrets.SONAR_SSH_HOST }} >> ~/.ssh/known_hosts
+
+            - name: 🚀 Deploy SonarQube via SSH
+              run: |
+                scp -P ${{ secrets.SONAR_SSH_PORT }} apps/sonarqube/base/compose.yaml ${{ secrets.SONAR_SSH_HOST }}:/tmp/compose.yaml
+                ssh -p ${{ secrets.SONAR_SSH_PORT }} ${{ secrets.SONAR_SSH_HOST }} "
+                  docker compose -f /tmp/compose.yaml down || true
+                  docker compose -f /tmp/compose.yaml up -d
+                "
 
             - name: 🐳 Set Up Docker Buildx
               uses: docker/setup-buildx-action@v3
