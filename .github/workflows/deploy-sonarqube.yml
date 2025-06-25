@@ -1,0 +1,31 @@
+name: 🐬 Build SonarQube Image
+
+on:
+    push:
+        paths:
+            - 'apps/sonarqube/**'
+    pull_request:
+        paths:
+            - 'apps/sonarqube/**'
+
+jobs:
+    build-sonarqube:
+        name: 🔧 Build & Validate SonarQube
+        runs-on: ubuntu-latest
+
+        defaults:
+            run:
+                working-directory: apps/sonarqube
+            
+        steps:
+            - name: ⬇️ Checkout code
+              uses: actions/checkout@v4
+
+            - name: 🐳 Set Up Docker Buildx
+              uses: docker/setup-buildx-action@v3
+
+            - name: 🔍 Validate docker-compose config
+              uses: docker compose -f config/compose.yaml config
+
+            - name: 🔨 Build custom SonarQube image
+              run: docker compose -f config/compose.yaml build
