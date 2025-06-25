@@ -23,7 +23,7 @@ jobs:
               uses: actions/checkout@v4
             - name: 🚀 Deploy SonarQube via SSH
               run: |
-                scp -P ${{ secrets.SONAR_SSH_PORT }} apps/sonarqube/base/compose.yaml ${{ secrets.SONAR_SSH_HOST }}:/tmp/compose.yaml
+                scp -P ${{ secrets.SONAR_SSH_PORT }} apps/sonarqube/config/compose.yaml ${{ secrets.SONAR_SSH_HOST }}:/tmp/compose.yaml
                 ssh -p ${{ secrets.SONAR_SSH_PORT }} ${{ secrets.SONAR_SSH_HOST }} "
                   docker compose -f /tmp/compose.yaml down || true
                   docker compose -f /tmp/compose.yaml up -d
