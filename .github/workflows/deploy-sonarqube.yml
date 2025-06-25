@@ -27,6 +27,7 @@ jobs:
                 pwd
                 ls -la
                 ls -la apps/sonarqube/config
+              working-directory: ${{ github.workspace }}
 
             - name: 🚀 Deploy SonarQube via SSH
               run: |
@@ -35,6 +36,7 @@ jobs:
                   docker compose -f /tmp/compose.yaml down || true
                   docker compose -f /tmp/compose.yaml up -d
                 "
+              working-directory: ${{ github.workspace }}
 
             - name: 🐳 Set Up Docker Buildx
               uses: docker/setup-buildx-action@v3
