@@ -21,6 +21,13 @@ jobs:
         steps:
             - name: ⬇️ Checkout code
               uses: actions/checkout@v4
+          
+            - name: 🧪 Ver contenido del repo
+              run: |
+                pwd
+                ls -la
+                ls -la apps/sonarqube/config
+
             - name: 🚀 Deploy SonarQube via SSH
               run: |
                 scp -P ${{ secrets.SONAR_SSH_PORT }} apps/sonarqube/config/compose.yaml ${{ secrets.SONAR_SSH_HOST }}:/tmp/compose.yaml
