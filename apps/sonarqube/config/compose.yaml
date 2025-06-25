@@ -1,0 +1,50 @@
+version: "3"
+
+services:
+  sonarqube:
+    image: sonarqube:2025.3-developer
+    depends_on:
+      - db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+
+      sonar.auth.saml.enabled: "true"
+      sonar.auth.saml.providerName: "JumpCloud"
+      sonar.auth.saml.applicationId: "sonarqube"
+      sonar.auth.saml.providerId: "JumpCloud"
+      sonar.auth.saml.loginUrl: "https://sso.jumpcloud.com/saml2/sonarqube-onestic"
+      sonar.auth.saml.certificate.secured: "-----BEGIN CERTIFICATE-----\nMIIFdjCCA16gAwIBAgIUTOPBXVlXZaFlsYE/vqCl1xSNHc8wDQYJKoZIhvcNAQEL\nBQAwdTELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNPMRAwDgYDVQQHEwdCb3VsZGVy\nMRAwDgYDVQQKEwdPbmVzdGljMRkwFwYDVQQLExBKdW1wQ2xvdWRTQU1MSWRQMRow\nGAYDVQQDExFKdW1wQ2xvdWRTQU1MVXNlcjAeF"
+
+      sonar.auth.saml.user.login: "login"
+      sonar.auth.saml.user.name: "name"
+      sonar.auth.saml.user.email: "email"
+      sonar.auth.saml.group.name: "memberOf"
+
+      sonar.core.serverBaseURL: "https://sonarqube.onestic.com"
+      sonar.web.proxy.forwarded: "true"
+      sonar.log.level: "DEBUG"
+
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+      - ../base/plugins:/opt/sonarqube/extensions/plugins
+    ports:
+      - "9000:9000"
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  postgresql:
+  postgresql_data:
