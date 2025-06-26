@@ -44,7 +44,7 @@ jobs:
 
     - name: 🐳 Cargar imagen en Docker
       run: |
-        gunzip -c /tmp/sonarqube-latest.tar.gz | docker load
+        gunzip -c /tmp/sonarqube-image/sonarqube-latest.tar.gz | docker load
 
     - name: 🔁 Reiniciar contenedor con nueva imagen
       run: |
