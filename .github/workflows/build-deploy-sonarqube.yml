@@ -1,0 +1,52 @@
+name: 🛠️ Build & 🚀 Deploy SonarQube
+
+on:
+  push:
+    paths:
+      - 'apps/sonarqube/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: 🔧 Build SonarQube
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🧪 Validar configuración (YAML)
+      run: yamllint apps/sonarqube/config/
+
+    - name: 🐳 Build imagen Docker
+      run: docker build -t sonarqube-onestic:latest apps/sonarqube/base
+
+    - name: 📦 Exportar imagen como .tar.gz
+      run: docker save sonarqube-onestic:latest | gzip > sonarqube-latest.tar.gz
+
+    - name: ☁️ Subir artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sonarqube-image
+        path: sonarqube-latest.tar.gz
+
+  deploy:
+    name: 🚀 Deploy SonarQube
+    needs: build
+    runs-on: self-hosted
+
+    steps:
+    - name: 📥 Descargar artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: sonarqube-image
+        path: /tmp/
+
+    - name: 🐳 Cargar imagen en Docker
+      run: |
+        gunzip -c /tmp/sonarqube-latest.tar.gz | docker load
+
+    - name: 🔁 Reiniciar contenedor con nueva imagen
+      run: |
+        docker compose -f apps/sonarqube/config/compose.yaml down || true
+        docker compose -f apps/sonarqube/config/compose.yaml up -d
