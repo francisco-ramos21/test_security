@@ -36,12 +36,13 @@ jobs:
     runs-on: self-hosted
 
     steps:
+    - name: 📥 Checkout repo
+      uses: actions/checkout@v4
     - name: 📥 Descargar artifact
       uses: actions/download-artifact@v4
       with:
         name: sonarqube-image
         path: /tmp/
-
     - name: 🐳 Cargar imagen en Docker
       run: |
         gunzip -c /tmp/sonarqube-latest.tar.gz | docker load
