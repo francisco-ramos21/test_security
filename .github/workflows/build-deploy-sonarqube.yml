@@ -25,6 +25,13 @@ jobs:
           --load \
           apps/sonarqube/base
 
+    - name: 🔍 Inspeccionar imagen construida
+      run: |
+        docker create --name test-image sonarqube-test:latest
+        docker export test-image | tar -tv | grep entrypoint.sh || echo "No entrypoint"
+        docker rm test-image
+
+
     - name: 📦 Exportar imagen como .tar.gz
       run: docker save sonarqube-test:latest | gzip > sonarqube-latest.tar.gz
 
