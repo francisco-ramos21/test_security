@@ -15,7 +15,8 @@ services:
       sonar.auth.saml.providerName: "JumpCloud"
       sonar.auth.saml.applicationId: "sonarqube"
       sonar.auth.saml.providerId: "JumpCloud"
-      sonar.auth.saml.loginUrl: "https://sso.jumpcloud.com/saml2/sonarqube-onestic"
+      sonar.auth.saml.loginUrl: >
+        https://sso.jumpcloud.com/saml2/sonarqube-onestic
       sonar.auth.saml.certificate.secured: | 
         -----BEGIN CERTIFICATE-----
         MIIFdjCCA16gAwIBAgIUTOPBXVlXZaFlsYE/vqCl1xSNHc8wDQYJKoZIhvcNAQEL
@@ -81,4 +82,4 @@ volumes:
   sonarqube_logs:
   postgresql:
   postgresql_data:
-  
+
