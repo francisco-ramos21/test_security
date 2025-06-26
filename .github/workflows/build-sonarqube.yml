@@ -1,0 +1,33 @@
+name: 🛠️ Build SonarQube image and store
+
+on:
+  push:
+    paths:
+      - 'apps/sonarqube/**'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: 📥 Checkout code
+      uses: actions/checkout@v4
+
+    - name: 🧪 Validar configuración (YAML)
+      run: |
+        yamllint apps/sonarqube/config/
+
+    - name: 🐳 Build Docker image
+      run: |
+        docker build -t sonarqube-onestic:latest apps/sonarqube/base
+
+    - name: 📦 Exportar imagen como tar
+      run: | 
+        docker save sonarqube-onestic:latest | gzip > sonarqube-latest.tar.gz
+
+    - name: ☁️ Subir como artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: sonarqube-image
+        path: sonarqube-latest.tar.gz
