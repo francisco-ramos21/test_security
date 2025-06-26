@@ -64,7 +64,7 @@ services:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
-      - ../base/plugins:/opt/sonarqube/extensions/plugins
+      #- ../base/plugins:/opt/sonarqube/extensions/plugins
     ports:
       - "9000:9000"
   db:
