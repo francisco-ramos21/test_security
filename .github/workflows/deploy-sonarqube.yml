@@ -1,48 +1,24 @@
-name: 🐬 Build SonarQube Image
+name: 🚀 Deploy SonarQube desde artifcat
 
 on:
-    push:
-        paths:
-            - 'apps/sonarqube/**'
-            - '.github/workflows/deploy-sonarqube.yml'
-    pull_request:
-        paths:
-            - 'apps/sonarqube/**'
-
+  workflow_dispatch:
+    
 jobs:
-    build-sonarqube:
-        name: 🔧 Build & Validate SonarQube
-        runs-on: ubuntu-latest
+  deploy:
+    runs-on: self-hosted
 
-        defaults:
-            run:
-                working-directory: apps/sonarqube
-            
-        steps:
-            - name: ⬇️ Checkout code
-              uses: actions/checkout@v4
-          
-            - name: 🧪 Ver contenido del repo
-              run: |
-                pwd
-                ls -la
-                ls -la apps/sonarqube/config
-              working-directory: ${{ github.workspace }}
+    steps:
+    - name: 📤 Descargar artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: sonarqube-image
+        path: /tmp/
 
-            - name: 🚀 Deploy SonarQube via SSH
-              run: |
-                scp -P ${{ secrets.SONAR_SSH_PORT }} apps/sonarqube/config/compose.yaml ${{ secrets.SONAR_SSH_HOST }}:/tmp/compose.yaml
-                ssh -p ${{ secrets.SONAR_SSH_PORT }} ${{ secrets.SONAR_SSH_HOST }} "
-                  docker compose -f /tmp/compose.yaml down || true
-                  docker compose -f /tmp/compose.yaml up -d
-                "
-              working-directory: ${{ github.workspace }}
+    - name: 🐳 Cargar imagen en Docker
+      run: |
+        gunzip -c /tmp/sonarqube-latest.tar.gz | docker load
 
-            - name: 🐳 Set Up Docker Buildx
-              uses: docker/setup-buildx-action@v3
-
-            - name: 🔍 Validate docker-compose config
-              run: docker compose -f config/compose.yaml config
-
-            - name: 🔨 Build custom SonarQube image
-              run: docker compose -f config/compose.yaml build
+    - name: 🔁 Reiniciar contenedor con nueva imagen
+      run: |
+        docker compose -f apps/sonarqube/config/compose.yaml down || true
+        docker compose -f apps/sonarqube/config/compose.yaml up -d
