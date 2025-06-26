@@ -1,3 +1,4 @@
+---
 version: "3"
 
 services:
@@ -15,7 +16,39 @@ services:
       sonar.auth.saml.applicationId: "sonarqube"
       sonar.auth.saml.providerId: "JumpCloud"
       sonar.auth.saml.loginUrl: "https://sso.jumpcloud.com/saml2/sonarqube-onestic"
-      sonar.auth.saml.certificate.secured: "-----BEGIN CERTIFICATE-----\nMIIFdjCCA16gAwIBAgIUTOPBXVlXZaFlsYE/vqCl1xSNHc8wDQYJKoZIhvcNAQEL\nBQAwdTELMAkGA1UEBhMCVVMxCzAJBgNVBAgTAkNPMRAwDgYDVQQHEwdCb3VsZGVy\nMRAwDgYDVQQKEwdPbmVzdGljMRkwFwYDVQQLExBKdW1wQ2xvdWRTQU1MSWRQMRow\nGAYDVQQDExFKdW1wQ2xvdWRTQU1MVXNlcjAeF"
+      sonar.auth.saml.certificate.secured: | 
+        -----BEGIN CERTIFICATE-----
+        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
+        CBjTyemQGSSFfQ==
+        -----END CERTIFICATE-----
 
       sonar.auth.saml.user.login: "login"
       sonar.auth.saml.user.name: "name"
@@ -48,3 +81,4 @@ volumes:
   sonarqube_logs:
   postgresql:
   postgresql_data:
+  
