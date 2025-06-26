@@ -19,7 +19,11 @@ jobs:
       run: yamllint apps/sonarqube/config/
 
     - name: 🐳 Build imagen Docker
-      run: docker build -t sonarqube-test:latest apps/sonarqube/base
+      run: |
+        docker buildx build --platform linux/arm64 \
+          -t sonarqube-onestic:latest \
+          --load \
+          apps/sonarqube/base
 
     - name: 📦 Exportar imagen como .tar.gz
       run: docker save sonarqube-test:latest | gzip > sonarqube-latest.tar.gz
