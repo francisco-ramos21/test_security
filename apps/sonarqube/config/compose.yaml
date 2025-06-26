@@ -3,7 +3,7 @@ version: "3"
 
 services:
   sonarqube:
-    image: sonarqube-onestic:latest
+    image: sonarqube-test:latest
     depends_on:
       - db
     environment:
