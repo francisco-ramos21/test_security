@@ -1,9 +1,6 @@
 name: 🛠️ Build & 🚀 Deploy SonarQube
 
 on:
-  push:
-    paths:
-      - 'apps/sonarqube/**'
   workflow_dispatch:
 
 jobs:
