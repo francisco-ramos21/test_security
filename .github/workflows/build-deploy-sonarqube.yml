@@ -40,6 +40,7 @@ jobs:
       with:
         name: sonarqube-image
         path: sonarqube-latest.tar.gz
+        retention-days: 1
 
   deploy:
     name: 🚀 Deploy SonarQube
