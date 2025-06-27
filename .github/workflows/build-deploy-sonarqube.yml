@@ -7,6 +7,22 @@ on:
   workflow_dispatch:
 
 jobs:
+  secrets-check:
+    name: 🔐 Secrets Check
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v4
+
+      - name: 🔍 Run TruffleHog Secret Scanning
+        id: secrets-scan
+        uses: onesdata/ops_workflows/.github/actions/secret-scanning@master
+      
+      - name: 🛑 Fail if secrets found
+        if: ${{ steps.secrets-scan.outcome == 'failure' }}
+        run: exit 1
   build:
     name: 🔧 Build SonarQube
     runs-on: ubuntu-latest
@@ -42,6 +58,33 @@ jobs:
         path: sonarqube-latest.tar.gz
         retention-days: 1
 
+  trivy_check:
+    name: 🛡️ Trivy Vulnerability Scan
+    runs-on: ubuntu-latest
+    needs: [build]
+    timeout-minutes: 20
+
+    steps:
+      - name: 📥 Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: sonarqube-image
+          path: /tmp
+        
+      - name: 📦 Load Docker image
+        run: |
+          gunzip -c /tmp/sonarqube-latest.tar.gz | docker load
+
+      - name: 🔍 Run Trivy Scan
+        id: trivy-scan
+        uses: onesdata/ops_workflows/.github/actions/trivy-scan@master
+        with:
+          image_name: sonarqube-test:latest
+          skip_dirs: '/root/,/usr/local/'
+
+      - name: 🛑 Fail if vulnerabilities found
+        if: ${{ steps.trivy-scan.outcome == 'failure'  }}
+        run: exit 1
   deploy:
     name: 🚀 Deploy SonarQube
     needs: build
