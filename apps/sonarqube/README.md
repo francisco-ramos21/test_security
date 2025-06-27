@@ -1,58 +1,44 @@
-# ⚙️ Aplicaciones de Seguridad
+# 🐬 SonarQube
 
-Este directorio contiene las distintas herramientas de seguridad utilizadas en Onestic, organizadas de forma modular y estandarizada para facilitar su despliegue, mantenimiento e integración mediante CI/CD.
+Este directorio contiene la configuración, personalización y despliegue automatizado de SonarQube como parte de la infraestructura de seguridad.
 
----
+Se utiliza la Developer Edition de SonarQube y se construye una imagen personalizada con plugins adicionales. Todo el proceso de contrucción y despliegue se gestiona mediante GitHub Actions y un runner local.
 
-## 📦 Estructura por aplicación
-
-Cada subcarpeta bajo `apps/` representa una herramienta concreta y sigue la siguiente estructura base:
-```tree
-apps/<nombre_app>/
-├── base/ # Dockerfile, entrypoint y recursos base del contenedor
-├── config/ # Configuración interna (reglas, perfiles, conectores…)
-├── VERSION # Versión semántica de la app (X.Y.Z)
-├── CHANGELOG.md # Historial de cambios detallado
-├── README.md # Información técnica específica de la herramienta
+## 🧱 Estructura
 ```
-> 📌 Las integraciones con otras herramientas del respositorio se documentan/configuran **desde la herramienta que inicia la conexión**. Si requiere configuración en ambas, se documenta en ambas carpetas.
----
-## 🧩 Aplicaciones actualmente integradas
-| Aplicación | Descripción |
-|------------|-------------|
-|`wazuh`| SIEM y monitorización de seguridad |
-|`greenbone`| Escáner de vulnerabilidades (OpenVAS)| |
-|`opencti` | Plataforma de inteligencia de amenazas |
-|`sonarqube` | Análisis de calidad de código fuente |
-
----
-## 🔖 Política de versionado `X.Y.Z`
-- `X` – Cambio **mayor** en la imagen base del contenedor (ej: cambio de imagen padre, reestructuración completa)
-- `Y` – Cambio **menor** en la imagen base (mejoras, actualizaciones, nuevas dependencias)
-- `Z` – Cambio en la **configuración funcional** (reglas, conectores, ajustes, integraciones)
-
-> Ejemplo: `4.1.2`  
-> `4` → nueva base del contenedor  
-> `1` → mejoras menores en esa base  
-> `2` → cambios funcionales internos
----
-## ✅ Convención de commits por aplicación
-Se sigue una convención clara para facilitar trazabilidad y automatización:
-```scss
-type(<app>): descripción
+apps/sonarqube/
+├── base/          # Dockerfile e imagen base personalizada con plugins
+├── config/        # Configuración adicional si se requiere (actualmente vacía)
+├── VERSION        # Versión actual de la herramienta gestionada
+├── CHANGELOG.md   # Historial de cambios (semver)
+└── README.md      # Este archivo
 ```
-### Ejemplos
-```scss
-feat(wazuh): añadida nueva integración con Slack
-fix(sonarqube): corregida configuración SAML
-docs(greenbone): actualizada documentación
-````
-### Tipos permitidos
-| Tipo | Descripción |
-|------|-------------|
-|`feat`|Nueva funcionalidad (base o config)|
-|`fix`|Corrección de errores (configuración o imagen)|
-|`chore`|Cambios sin impacto directo (estructura, metadata ...)|
-|`refactor`|Reestructuración técnica (Dockerfile, estructura interna)|
-|`docs`|Cambios solo en documentación|
+
+## 🐳 Imagen Docker personalizada
+Se construye una imagen basada en la edición Developer de SonarQube y se añaden los plugin deseados en la carpeta:
+```swift
+apps/sonarqube/base/plugins
+```
+
+Los `.jar` que se ubiquen en esa ruta se copiarán automáticamente a `/opt/sonarqube/extensions/plugin` durante la build.
+
+## 🚀 Despliegue automático
+El despliegue se realiza mediante un workflow de GitHub Actions localizado en `.github/workflows`.
+Este workflow:
+1. Valida la configuración YAML del `config/`.
+2. Construye la imagen con `docker buildx`.
+3. Inspecciona el contenido del contenedor.
+4. Permite cargar la imagen resultante en el runner local.
+5. Sube un artifact de la imagen construida.
+
+El despliegue en sí requiere intervención manual (para ser lanzado desde el runner local, que se activará previamente).
+
+## 🔌 Plugins 
+- Creedengo
+    - `creedengo-php`
+    - `creedengo-python`
+- OWASP Dependecy-Check Plugin for Sonar.
+
+## 🔁 Versionado
+La versión de la solución personalizada se mantiene en el archivo `VERSION`siguientdo (X.Y.Z). Este valor puede usarse como tag para el contenedor si se desea extender el flujo de CI/CD.
 ---
