@@ -1,0 +1,24 @@
+name: 🛠️ Build & 🚀 Deploy Greenbone
+
+on:
+    push:
+        paths:
+            - 'apps/greenbone/**'
+    workflow_dispatch:
+
+jobs:
+    deploy:
+        name: 🔐 Deploy Greenbone
+        runs-on: self-hosted
+
+        steps:
+            - name: 📥 Checkout
+              uses: actions/checkout@v4
+
+            - name: 🐳 Reiniciar entorno Greenbone
+              run: |
+                cd apps/greenbone/config
+                docker compose down
+                docker compose pull
+                docker compose up -d
+                
