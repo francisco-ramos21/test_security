@@ -63,14 +63,25 @@ services:
     depends_on:
       - opencti-dev-redis
       - opencti-dev-elasticsearch
-      - opencti-dev-rabbitmq
       - opencti-dev-minio
+      - opencti-dev-rabbitmq
+    environment:
+      - APP__PORT=8080
+      - APP__BASE_URL=http://localhost:8080
+      - REDIS__HOST=opencti-dev-redis
+      - ELASTICSEARCH__URL=http://opencti-dev-elasticsearch:9200
+      - MINIO__ENDPOINT=opencti-dev-minio
+      - MINIO__PORT=9000
+      - MINIO__USE_SSL=false
+      - MINIO__ACCESS_KEY=${MINIO_ROOT_USER}
+      - MINIO__SECRET_KEY=${MINIO_ROOT_PASSWORD}
+      - RABBITMQ__HOSTNAME=opencti-dev-rabbitmq
+      - RABBITMQ__PORT=5672
+      - RABBITMQ__USERNAME=guest
+      - RABBITMQ__PASSWORD=guest
     ports:
       - "8080:8080"
-    environment:
-      - NODE_OPTIONS=--max_old_space_size=4096
-      - APP__PORT=8080
-      - MINIO_ROOT_USER=minioadmin
-      - MINIO_ROOT_PASSWORD=minioadmin
-      - SEARCH__ELASTICSEARCH__URL=http://opencti-dev-elasticsearch:9200
+    env_file:
+      - .env
+
 
