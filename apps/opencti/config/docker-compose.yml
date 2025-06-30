@@ -56,3 +56,22 @@ services:
     ports:
       - "5672:5672"
       - "15672:15672"
+  opencti-dev-platform:
+    container_name: opencti-dev-platform
+    image: opencti/platform:6.7.1
+    restart: unless-stopped
+    depends_on:
+      - opencti-dev-redis
+      - opencti-dev-elasticsearch
+      - opencti-dev-rabbitmq
+      - opencti-dev-minio
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    environment:
+      - NODE_OPTIONS=--max_old_space_size=4096
+      - APP__PORT=8080
+      - MINIO_ROOT_USER=minioadmin
+      - MINIO_ROOT_PASSWORD=minioadmin
+
