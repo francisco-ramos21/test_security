@@ -19,6 +19,6 @@ jobs:
             - name: 🚀 Deplegar OpenCTI con docker-compose
               run: |
                 cd apps/opencti/config
-                docker-compose up -d
+                docker compose up -d
             - name: 🧪 Comprobar estado de contenedores
               run: docker ps -a
