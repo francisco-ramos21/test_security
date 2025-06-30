@@ -69,7 +69,7 @@ services:
       - APP__PORT=8080
       - APP__BASE_URL=http://localhost:8080
       - REDIS__HOST=opencti-dev-redis  # ✅ correcto
-      - ELASTICSEARCH__URL=http://opencti-dev-elasticsearch:9200
+      - SEARCH__ENGINE__URL=http://opencti-dev-elasticsearch:9200
       - MINIO__ENDPOINT=opencti-dev-minio
       - MINIO__PORT=9000
       - MINIO__USE_SSL=false
