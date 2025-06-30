@@ -68,7 +68,7 @@ services:
     environment:
       - APP__PORT=8080
       - APP__BASE_URL=http://localhost:8080
-      - REDIS__HOST=opencti-dev-redis
+      - REDIS_HOST=opencti-dev-redis
       - ELASTICSEARCH__URL=http://opencti-dev-elasticsearch:9200
       - MINIO__ENDPOINT=opencti-dev-minio
       - MINIO__PORT=9000
@@ -83,5 +83,3 @@ services:
       - "8080:8080"
     env_file:
       - .env
-
-
