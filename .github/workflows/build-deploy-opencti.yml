@@ -1,8 +1,6 @@
 name: 🛠️ Build & 🚀 Deploy OpenCTI
-
 on:
     workflow_dispatch:
-
 jobs:
     deploy:
         name: 🧪 Deploy OpenCTI
@@ -11,19 +9,15 @@ jobs:
         steps:
             - name: 📥 Checkout repo
               uses: actions/checkout@v4
-
             - name: 🔍 Validar YAML
               run: yamllint apps/opencti/config
-
             - name: 🔧 Establecer vm.max_map_count
               run: |
                 sudo sysctl -w vm.max_map_count=1048575
                 echo "vm.max_map_count=1048575" | sudo tee -a /etc/sysctl.conf
-
             - name: 🚀 Deplegar OpenCTI con docker-compose
               run: |
                 cd apps/opencti/config
                 docker-compose up -d
-
             - name: 🧪 Comprobar estado de contenedores
               run: docker ps -a
