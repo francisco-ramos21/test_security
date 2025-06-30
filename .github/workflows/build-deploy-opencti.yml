@@ -16,6 +16,9 @@ jobs:
               run: |
                 sudo sysctl -w vm.max_map_count=1048575
                 echo "vm.max_map_count=1048575" | sudo tee -a /etc/sysctl.conf
+            - name: 🌱 Exportar variables .env
+              run: |
+                export $(grep -v '^#' apps/opencti/config/.env | xargs)
             - name: 🚀 Deplegar OpenCTI con docker-compose
               run: |
                 cd apps/opencti/config
