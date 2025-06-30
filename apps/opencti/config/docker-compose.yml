@@ -75,10 +75,10 @@ services:
     environment:
       - NODE_OPTIONS=--max-old-space-size=8096
       - APP__PORT=8080
-      - APP__BASE_URL=${OPENCTI_BASE_URL}
-      - APP__ADMIN__EMAIL=${OPENCTI_ADMIN_EMAIL}
-      - APP__ADMIN__PASSWORD=${OPENCTI_ADMIN_PASSWORD}
-      - APP__ADMIN__TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - APP__BASE_URL=http://localhost:8080
+      - APP__ADMIN__EMAIL=admin@opencti.io
+      - APP__ADMIN__PASSWORD=changeme
+      - APP__ADMIN__TOKEN=OPENCTI_ADMIN_TOKEN=ChangeMe_UUIDv4
       - APP__APP_LOGS__LOGS_LEVEL=error
       - REDIS__HOSTNAME=redis
       - REDIS__PORT=6379
@@ -87,18 +87,18 @@ services:
       - MINIO__ENDPOINT=minio
       - MINIO__PORT=9000
       - MINIO__USE_SSL=false
-      - MINIO__ACCESS_KEY=${MINIO_ROOT_USER}
-      - MINIO__SECRET_KEY=${MINIO_ROOT_PASSWORD}
+      #- MINIO__ACCESS_KEY=${MINIO_ROOT_USER}
+      #- MINIO__SECRET_KEY=${MINIO_ROOT_PASSWORD}
       - RABBITMQ__HOSTNAME=rabbitmq
       - RABBITMQ__PORT=5672
       - RABBITMQ__PORT_MANAGEMENT=15672
       - RABBITMQ__MANAGEMENT_SSL=false
-      - RABBITMQ__USERNAME=${RABBITMQ_DEFAULT_USER}
-      - RABBITMQ__PASSWORD=${RABBITMQ_DEFAULT_PASS}
-      - SMTP__HOSTNAME=${SMTP_HOSTNAME}
+      - RABBITMQ__USERNAME=opencti
+      - RABBITMQ__PASSWORD=changeme
+      - SMTP__HOSTNAME=localhost
       - SMTP__PORT=25
       - PROVIDERS__LOCAL__STRATEGY=LocalStrategy
-      - APP__HEALTH_ACCESS_KEY=${OPENCTI_HEALTHCHECK_ACCESS_KEY}
+      - APP__HEALTH_ACCESS_KEY=changeme
       - S3_ENDPOINT=http://minio:9000
       - S3_ACCESS_KEY_ID=minioadmin
       - S3_SECRET_ACCESS_KEY=minioadmin
@@ -125,7 +125,7 @@ services:
     image: opencti/worker:6.7.1
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
+      - OPENCTI_TOKEN=ChangeMe_UUIDv4
       - WORKER_LOG_LEVEL=info
     depends_on:
       opencti:
@@ -138,8 +138,8 @@ services:
     image: opencti/connector-export-file-stix:6.7.1
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
-      - CONNECTOR_ID=${CONNECTOR_EXPORT_FILE_STIX_ID} # Valid UUIDv4
+      - OPENCTI_TOKEN=ChangeMe_UUIDv4
+      - CONNECTOR_ID=72327164-0b35-482b-b5d6-a5a3f76b845f # Valid UUIDv4
       - CONNECTOR_TYPE=INTERNAL_EXPORT_FILE
       - CONNECTOR_NAME=ExportFileStix2
       - CONNECTOR_SCOPE=application/json
@@ -152,8 +152,8 @@ services:
     image: opencti/connector-export-file-csv:6.7.1
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
-      - CONNECTOR_ID=${CONNECTOR_EXPORT_FILE_CSV_ID} # Valid UUIDv4
+      - OPENCTI_TOKEN=ChangeMe_UUIDv4
+      - CONNECTOR_ID=7ba187fb-fde8-4063-92b5-c3da34060dd7 # Valid UUIDv4
       - CONNECTOR_TYPE=INTERNAL_EXPORT_FILE
       - CONNECTOR_NAME=ExportFileCsv
       - CONNECTOR_SCOPE=text/csv
@@ -166,8 +166,8 @@ services:
     image: opencti/connector-export-file-txt:6.7.1
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
-      - CONNECTOR_ID=${CONNECTOR_EXPORT_FILE_TXT_ID} # Valid UUIDv4
+      - OPENCTI_TOKEN=ChangeMe_UUIDv4
+      - CONNECTOR_ID=ca715d9c-bd64-4351-91db-33a8d728a58b # Valid UUIDv4
       - CONNECTOR_TYPE=INTERNAL_EXPORT_FILE
       - CONNECTOR_NAME=ExportFileTxt
       - CONNECTOR_SCOPE=text/plain
@@ -180,8 +180,8 @@ services:
     image: opencti/connector-import-file-stix:6.7.1
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
-      - CONNECTOR_ID=${CONNECTOR_IMPORT_FILE_STIX_ID} # Valid UUIDv4
+      - OPENCTI_TOKEN=ChangeMe_UUIDv4
+      - CONNECTOR_ID=72327164-0b35-482b-b5d6-a5a3f76b845f # Valid UUIDv4
       - CONNECTOR_TYPE=INTERNAL_IMPORT_FILE
       - CONNECTOR_NAME=ImportFileStix
       - CONNECTOR_VALIDATE_BEFORE_IMPORT=true # Validate any bundle before import
@@ -196,8 +196,8 @@ services:
     image: opencti/connector-import-document:6.7.1
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
-      - CONNECTOR_ID=${CONNECTOR_IMPORT_DOCUMENT_ID} # Valid UUIDv4
+      - OPENCTI_TOKEN=ChangeMe_UUIDv4
+      - CONNECTOR_ID=c3970f8a-ce4b-4497-a381-20b7256f56f0 # Valid UUIDv4
       - CONNECTOR_TYPE=INTERNAL_IMPORT_FILE
       - CONNECTOR_NAME=ImportDocument
       - CONNECTOR_VALIDATE_BEFORE_IMPORT=true # Validate any bundle before import
@@ -215,8 +215,8 @@ services:
     image: opencti/connector-import-document:6.7.1
     environment:
       - OPENCTI_URL=http://opencti:8080
-      - OPENCTI_TOKEN=${OPENCTI_ADMIN_TOKEN}
-      - CONNECTOR_ID=${CONNECTOR_ANALYSIS_ID} # Valid UUIDv4
+      - OPENCTI_TOKEN=ChangeMe_UUIDv4
+      - CONNECTOR_ID=4dffd77c-ec11-4abe-bca7-fd997f79fa36 # Valid UUIDv4
       - CONNECTOR_TYPE=INTERNAL_ANALYSIS
       - CONNECTOR_NAME=ImportDocumentAnalysis
       - CONNECTOR_VALIDATE_BEFORE_IMPORT=false # Validate any bundle before import
