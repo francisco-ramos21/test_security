@@ -67,8 +67,6 @@ services:
       - opencti-dev-minio
     ports:
       - "8080:8080"
-    env_file:
-      - .env
     environment:
       - NODE_OPTIONS=--max_old_space_size=4096
       - APP__PORT=8080
