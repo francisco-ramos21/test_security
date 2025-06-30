@@ -72,5 +72,5 @@ services:
       - APP__PORT=8080
       - MINIO_ROOT_USER=minioadmin
       - MINIO_ROOT_PASSWORD=minioadmin
-      - SEARCH__ELASTICSEARCH__URL=http://opencti-dev-elasticsearch:9200
+      - SEARCH__ELASTICSEARCH__URL=http://192.168.20.11:9200
 
