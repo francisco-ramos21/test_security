@@ -54,11 +54,6 @@ services:
     restart: on-failure
     volumes:
       - redis_socket_vol:/run/redis/
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
 
   pg-gvm:
     image: registry.community.greenbone.net/community/pg-gvm:stable
@@ -66,11 +61,6 @@ services:
     volumes:
       - psql_data_vol:/var/lib/postgresql
       - psql_socket_vol:/var/run/postgresql
-    healthcheck:
-      test: ["CMD", "pg_isready", "-U", "postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 10
 
   gvmd:
     image: registry.community.greenbone.net/community/gvmd:stable
@@ -89,9 +79,7 @@ services:
       - psql_socket_vol:/var/run/postgresql
     depends_on:
       pg-gvm:
-        condition: service_healthy
-      ospd-openvas:
-        condition: service_healthy
+        condition: service_started
       scap-data:
         condition: service_completed_successfully
       cert-bund-data:
@@ -205,12 +193,6 @@ services:
       - redis_socket_vol:/run/redis/
       - openvas_data_vol:/etc/openvas/
       - openvas_log_data_vol:/var/log/openvas
-    healthcheck:
-      test: ["CMD", "test", "-S", "/run/ospd/ospd-openvas.sock"]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-
     depends_on:
       redis-server:
         condition: service_started
@@ -227,10 +209,8 @@ services:
       - gvmd_socket_vol:/run/gvmd
       - ospd_openvas_socket_vol:/run/ospd
     depends_on:
-      gvmd:
-        condition: service_healthy
-      ospd-openvas:
-        condition: service_healthy
+      - gvmd
+      - ospd-openvas
 
 volumes:
   gpg_data_vol:
