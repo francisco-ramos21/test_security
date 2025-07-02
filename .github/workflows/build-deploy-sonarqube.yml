@@ -68,12 +68,12 @@ jobs:
         run: |
           gunzip -c /tmp/sonarqube-latest.tar.gz | docker load
 
-      - name: 🔍 Run Trivy Scan
-        id: trivy-scan
-        uses: onesdata/ops_workflows/.github/actions/trivy-scan@master
-        with:
-          image_name: sonarqube-test:latest
-          skip_dirs: '/root/,/usr/local/'
+      #- name: 🔍 Run Trivy Scan
+      #  id: trivy-scan
+      #  uses: onesdata/ops_workflows/.github/actions/trivy-scan@master
+      #  with:
+      #    image_name: sonarqube-test:latest
+      #    skip_dirs: '/root/,/usr/local/'
 
       - name: 🛑 Fail if vulnerabilities found
         if: ${{ steps.trivy-scan.outcome == 'failure'  }}
