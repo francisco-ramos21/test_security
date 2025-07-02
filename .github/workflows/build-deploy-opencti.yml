@@ -18,7 +18,7 @@ jobs:
                 export $(grep -v '^#' apps/opencti/config/.env | xargs)
             - name: 🚀 Deplegar OpenCTI con docker-compose
               run: |
-                cd apps/opencti/config
+                cd apps/opencti/config/docker
                 docker compose down
                 docker compose up -d
             - name: 🧪 Comprobar estado de contenedores
