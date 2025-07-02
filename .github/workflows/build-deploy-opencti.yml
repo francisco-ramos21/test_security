@@ -10,8 +10,7 @@ jobs:
             - name: 📥 Checkout repo
               uses: actions/checkout@v4
             - name: 🔍 Validar YAML (ignorar estilo estricto)
-              run: |
-                yamllint apps/opencti/config
+              run: yamllint apps/opencti/config
             - name: 🔧 Establecer vm.max_map_count
               run: |
                 sudo sysctl -w vm.max_map_count=1048575
