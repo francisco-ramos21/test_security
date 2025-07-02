@@ -32,11 +32,7 @@ jobs:
       run: yamllint apps/sonarqube/config/
 
     - name: 🐳 Build imagen Docker
-      run: |
-        docker buildx build --platform linux/arm64 \
-          -t sonarqube-test:latest \
-          --load \
-          apps/sonarqube/base
+      run: docker build -t sonarqube-onestic:latest apps/sonarqube/base
 
     - name: 🔍 Inspeccionar imagen construida
       run: |
