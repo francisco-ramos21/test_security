@@ -75,9 +75,9 @@ jobs:
       #    image_name: sonarqube-test:latest
       #    skip_dirs: '/root/,/usr/local/'
 
-      - name: 🛑 Fail if vulnerabilities found
-        if: ${{ steps.trivy-scan.outcome == 'failure'  }}
-        run: exit 1
+      #- name: 🛑 Fail if vulnerabilities found
+      #  if: ${{ steps.trivy-scan.outcome == 'failure'  }}
+      #  run: exit 1
   deploy:
     name: 🚀 Deploy SonarQube
     needs: build
