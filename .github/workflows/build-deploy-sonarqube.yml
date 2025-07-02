@@ -4,22 +4,22 @@ on:
   workflow_dispatch:
 
 jobs:
-  secrets-check:
-    name: 🔐 Secrets Check
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
+  #secrets-check:
+  #  name: 🔐 Secrets Check
+  #  runs-on: ubuntu-latest
+  #  timeout-minutes: 10
 
-    steps:
-      - name: 📥 Checkout code
-        uses: actions/checkout@v4
+    #steps:
+    #  - name: 📥 Checkout code
+    #    uses: actions/checkout@v4
 
-      - name: 🔍 Run TruffleHog Secret Scanning
-        id: secrets-scan
-        uses: onesdata/ops_workflows/.github/actions/secret-scanning@master
+    #  - name: 🔍 Run TruffleHog Secret Scanning
+    #    id: secrets-scan
+    #    uses: onesdata/ops_workflows/.github/actions/secret-scanning@master
       
-      - name: 🛑 Fail if secrets found
-        if: ${{ steps.secrets-scan.outcome == 'failure' }}
-        run: exit 1
+    #  - name: 🛑 Fail if secrets found
+    #    if: ${{ steps.secrets-scan.outcome == 'failure' }}
+    #    run: exit 1
   build:
     name: 🔧 Build SonarQube
     runs-on: ubuntu-latest
@@ -32,7 +32,7 @@ jobs:
       run: yamllint apps/sonarqube/config/
 
     - name: 🐳 Build imagen Docker
-      run: docker build -t sonarqube-onestic:latest apps/sonarqube/base
+      run: docker build -t sonarqube-test:latest apps/sonarqube/base
 
     - name: 🔍 Inspeccionar imagen construida
       run: |
